@@ -1,6 +1,6 @@
 NAME = ft_turing
 
-CML = ocamlc
+CML = ocamlfind ocamlc -package yojson -linkpkg
 CFLAGS = 
 
 RM = rm
