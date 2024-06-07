@@ -1,0 +1,28 @@
+{
+    "name": "02n_word",
+    "alphabet": [ "0", "y", "n", "." ],
+    "blank": ".",
+    "states": [ "scanone", "scantwo", "invalid", "HALT" ],
+    "initial": "scanright",
+    "finals": [ "HALT" ],
+    "transitions": {
+        "scanone": [
+            { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" },
+            { "read": "0", "to_state": "scantwo", "write": "0", "action": "RIGHT" },
+            { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
+            { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
+        ],
+        "scantwo": [
+            { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" },
+            { "read": "0", "to_state": "scanone", "write": "0", "action": "RIGHT" },
+            { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
+            { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
+        ],
+        "invalid": [
+            { "read": ".", "to_state": "HALT", "write": "n", "action": "LEFT" },
+            { "read": "0", "to_state": "invalid", "write": "0", "action": "RIGHT" },
+            { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
+            { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
+        ]
+    }
+}
