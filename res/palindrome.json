@@ -2,7 +2,7 @@
     "name": "palindrome",
     "alphabet": [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "x", "y", "n", "." ],
     "blank": ".",
-    "states": [ "scanright", "scanleft", "check_0", "check_1", "end_0", "end_1", "valid", "invalid", "HALT" ],
+    "states": [ "scanright", "scanleft", "check_A", "check_B", "check_C", "check_D", "check_E", "check_F", "check_G", "check_H", "check_I", "check_J", "check_K", "check_L", "check_M", "check_N", "check_O", "check_P", "check_Q", "check_R", "check_S", "check_T", "check_U", "check_V", "check_W", "check_X", "check_Y", "check_Z", "end_A", "end_B", "end_C", "end_D", "end_E", "end_F", "end_G", "end_H", "end_I", "end_J", "end_K", "end_L", "end_M", "end_N", "end_O", "end_P", "end_Q", "end_R", "end_S", "end_T", "end_U", "end_V", "end_W", "end_X", "end_Y", "end_Z", "valid", "invalid", "HALT" ],
     "initial": "scanright",
     "finals": [ "HALT" ],
     "transitions": {
