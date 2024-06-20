@@ -5,22 +5,22 @@ include Parser
 
 let () =
   if Array.length Sys.argv = 1 then
-    Printf.printf "Invalid arguments, try --help\n"
+    print_endline "Invalid arguments, try --help"
   else if Sys.argv.(1) = "--help" || Sys.argv.(1) = "-h" then (
-    Printf.printf "usage: ft_turing [-h] jsonfile input\n\n";
-    Printf.printf "positional arguments:\n";
-    Printf.printf " jsonfile       json description of the machine\n\n";
-    Printf.printf " input          input of the machine\n\n";
-    Printf.printf "optional arguments:\n";
-    Printf.printf "-h, --help show this help message and exit\n";
+    print_endline "usage: ft_turing [-h] jsonfile input\n";
+    print_endline "positional arguments:";
+    print_endline " jsonfile       json description of the machine\n";
+    print_endline " input          input of the machine\n";
+    print_endline "optional arguments:";
+    print_endline "-h, --help show this help message and exit";
   )
   else if Array.length Sys.argv = 2 then
-    Printf.printf "Invalid arguments, try --help\n"
+    print_endline "Invalid arguments, try --help"
   else (
     let filename = Sys.argv.(1) in
     let input = Sys.argv.(2) in
     if not (Sys.file_exists filename) then (
-      printf "File %s does not exist.\n" filename;
+      print_endline "File does not exist.";
       exit 1
     );
 
@@ -42,7 +42,7 @@ let () =
 
     with
     | Yojson.Json_error msg ->
-      printf "File %s is not a valid JSON file: %s\n" filename msg;
+      Printf.printf "File %s is not a valid JSON file: %s\n" filename msg;
       exit 1
   )
 
