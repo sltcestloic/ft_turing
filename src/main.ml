@@ -1,35 +1,7 @@
-open Yojson.Basic.Util
-open Printf
+include Printf
 include Transition
 include Turing_machine
-
-let parse_machine json =
-  let machine = new turing_machine in
-  machine#set_name (json |> member "name" |> to_string);
-  machine#set_alphabet (json |> member "alphabet" |> to_list |> List.map to_string);
-  machine#set_blank (json |> member "blank" |> to_string);
-  machine#set_states (json |> member "states" |> to_list |> List.map to_string);
-  machine#set_initial (json |> member "initial" |> to_string);
-  machine#set_finals (json |> member "finals" |> to_list |> List.map to_string);
-
-  let transitions_tbl = Hashtbl.create 10 in
-  let transitions_json = json |> member "transitions" |> to_assoc in
-  List.iter (fun (state, transitions) ->
-    match transitions with
-    | `List transitions ->
-      let transitions_list = List.map (fun t ->
-        {
-          Transition.read = t |> member "read" |> to_string;
-          Transition.to_state = t |> member "to_state" |> to_string;
-          Transition.write = t |> member "write" |> to_string;
-          Transition.action = t |> member "action" |> to_string;
-        }
-      ) transitions in
-      Hashtbl.add transitions_tbl state transitions_list
-    | _ -> failwith "Invalid transitions format"
-  ) transitions_json;
-  machine#set_transitions transitions_tbl;
-  machine
+include Parser
 
 let () =
   if Array.length Sys.argv = 1 then
@@ -63,6 +35,10 @@ let () =
       Printf.printf "Final States: %s\n" (String.concat ", " machine#get_finals);
       Printf.printf "Transitions:\n";
       machine#print_transitions;
+
+      if validate_machine machine then (
+        print_endline "Machine is valid !";
+      )
 
     with
     | Yojson.Json_error msg ->

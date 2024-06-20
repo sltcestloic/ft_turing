@@ -9,7 +9,7 @@ RFLAGS = -rf
 OBJ_DIR = .obj
 SRC_DIR = src
 
-SRC_FILES =  transition.ml turing_machine.ml main.ml
+SRC_FILES = transition.ml turing_machine.ml parser.ml main.ml
 
 OBJ_FILES = $(SRC_FILES:%.ml=%.cmx)
 OBJS = $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
@@ -31,10 +31,8 @@ clean:
 fclean: clean
 	$(RM) $(RFLAGS) $(NAME)
 
-# Rule to rebuild everything
 .PHONY: re
 re: fclean all
 
-# Target to build all
 .PHONY: all
 all: $(NAME)
