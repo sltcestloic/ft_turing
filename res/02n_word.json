@@ -3,7 +3,7 @@
     "alphabet": [ "0", "y", "n", "." ],
     "blank": ".",
     "states": [ "scanone", "scantwo", "invalid", "HALT" ],
-    "initial": "scanright",
+    "initial": "scanone",
     "finals": [ "HALT" ],
     "transitions": {
         "scanone": [

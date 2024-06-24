@@ -18,8 +18,6 @@ $(OBJ_DIR)/%.cmx: $(SRC_DIR)/%.ml
 	@mkdir -p $(OBJ_DIR)
 	$(CML) -I .obj -o $@ -c $<
 
-$(OBJS): $(INTS)
-
 $(NAME): $(OBJS)
 	$(CML) -o $(NAME) $(OBJS)
 
