@@ -2,8 +2,8 @@ include Turing_machine
 include Yojson.Basic.Util
 
 let validate_input (machine : turing_machine) (input : string) : bool =
-  let alphabet = machine#get_alphabet in
-  let blank = String.get machine#get_blank 0 in
+  let alphabet = machine.alphabet in
+  let blank = String.get machine.blank 0 in
   let has_invalid_char =
     String.exists (fun c -> not (List.exists (fun s -> s = String.make 1 c) alphabet)) input
   in
@@ -18,13 +18,13 @@ let validate_input (machine : turing_machine) (input : string) : bool =
 
 
 let validate_machine machine =
-  let name = machine#get_name in
-  let alphabet = machine#get_alphabet in
-  let blank = machine#get_blank in
-  let states = machine#get_states in
-  let initial = machine#get_initial in
-  let finals = machine#get_finals in
-  let transitions = machine#get_transitions in
+  let name = machine.name in
+  let alphabet = machine.alphabet in
+  let blank = machine.blank in
+  let states = machine.states in
+  let initial = machine.initial in
+  let finals = machine.finals in
+  let transitions = machine.transitions in
 
   if name = "" then false
   else if not (List.for_all (fun s -> String.length s = 1) alphabet) then (
@@ -89,15 +89,15 @@ let validate_machine machine =
     with Exit -> false
 
 let parse_machine json input =
-  let machine = new turing_machine in
-  machine#set_name (json |> member "name" |> to_string);
-  machine#set_alphabet (json |> member "alphabet" |> to_list |> List.map to_string);
-  machine#set_blank (json |> member "blank" |> to_string);
-  machine#set_states (json |> member "states" |> to_list |> List.map to_string);
-  machine#set_initial (json |> member "initial" |> to_string);
-  machine#set_finals (json |> member "finals" |> to_list |> List.map to_string);
-  machine#set_state machine#get_initial;
-  machine#set_tape (input);
+  let name = json |> member "name" |> to_string in
+  let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
+  let blank = json |> member "blank" |> to_string in
+  let states = json |> member "states" |> to_list |> List.map to_string in
+  let initial = json |> member "initial" |> to_string in
+  let finals = json |> member "finals" |> to_list |> List.map to_string in
+  let state = initial in
+  let tape = input in
+  let head = 0 in
 
   let transitions_tbl = Hashtbl.create 10 in
   let transitions_json = json |> member "transitions" |> to_assoc in
@@ -115,5 +115,16 @@ let parse_machine json input =
         Hashtbl.add transitions_tbl state transitions_list
       | _ -> failwith "Error: Invalid transitions format"
     ) transitions_json;
-  machine#set_transitions transitions_tbl;
-  machine
+
+  {
+    name;
+    alphabet;
+    blank;
+    states;
+    initial;
+    finals;
+    state;
+    tape;
+    head;
+    transitions = transitions_tbl;
+  }

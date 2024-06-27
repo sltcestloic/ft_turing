@@ -4,6 +4,16 @@ include Turing_machine
 include Parser
 include Runner
 
+let print_transitions transitions =
+  Hashtbl.iter (fun state trans_list ->
+    Printf.printf "State %s:\n" state;
+    List.iter (fun (trans : Transition.transition) ->
+      Printf.printf "  Read: %s, To State: %s, Write: %s, Action: %s\n"
+        trans.read trans.to_state trans.write trans.action
+    ) trans_list
+  ) transitions
+
+
 let () =
   if Array.length Sys.argv = 1 then
     print_endline "Invalid arguments, try --help"
@@ -28,14 +38,14 @@ let () =
     try 
       let json = Yojson.Basic.from_file filename in
       let machine = parse_machine json input in
-      Printf.printf "Machine Name: %s\n" machine#get_name;
-      Printf.printf "Alphabet: %s\n" (String.concat ", " machine#get_alphabet);
-      Printf.printf "Blank: %s\n" machine#get_blank;
-      Printf.printf "States: %s\n" (String.concat ", " machine#get_states);
-      Printf.printf "Initial State: %s\n" machine#get_initial;
-      Printf.printf "Final States: %s\n" (String.concat ", " machine#get_finals);
+      Printf.printf "Machine Name: %s\n" machine.name;
+      Printf.printf "Alphabet: %s\n" (String.concat ", " machine.alphabet);
+      Printf.printf "Blank: %s\n" machine.blank;
+      Printf.printf "States: %s\n" (String.concat ", " machine.states);
+      Printf.printf "Initial State: %s\n" machine.initial;
+      Printf.printf "Final States: %s\n" (String.concat ", " machine.finals);
       Printf.printf "Transitions:\n";
-      machine#print_transitions;
+      print_transitions machine.transitions;
 
       if validate_machine machine then (
         if not (validate_input machine input) then
