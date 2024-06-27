@@ -84,7 +84,7 @@ let rec run_machine (machine : turing_machine) =
 
       let final_states = machine#get_finals in
       if List.mem new_state final_states then
-        Printf.printf "Final state reached.\n"
+        Printf.printf "Done.\n"
       else
         run_machine machine 
       
