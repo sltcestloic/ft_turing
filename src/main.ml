@@ -2,6 +2,7 @@ include Printf
 include Transition
 include Turing_machine
 include Parser
+include Runner
 
 let () =
   if Array.length Sys.argv = 1 then
@@ -26,7 +27,7 @@ let () =
 
     try 
       let json = Yojson.Basic.from_file filename in
-      let machine = parse_machine json in
+      let machine = parse_machine json input in
       Printf.printf "Turing Machine Name: %s\n" machine#get_name;
       Printf.printf "Alphabet: %s\n" (String.concat ", " machine#get_alphabet);
       Printf.printf "Blank: %s\n" machine#get_blank;
@@ -38,6 +39,7 @@ let () =
 
       if validate_machine machine then (
         print_endline "Machine is valid !";
+        run_machine machine
       )
 
     with

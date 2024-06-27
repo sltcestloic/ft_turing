@@ -1,2 +1,82 @@
-let run_machine machine =
+include Transition
+include Turing_machine
+
+let get_next_transition machine currentCharacter =
+  let current_state = machine#get_state in
+  let transitions = Hashtbl.find_opt machine#get_transitions current_state in
+  match transitions with
+  | None -> None
+  | Some trans_list ->
+      let rec find_transition transitions currentCharacter =
+        match transitions with
+        | [] -> None
+        | (transition : Transition.transition)::rest -> 
+          if transition.read = currentCharacter then
+            Some transition
+          else
+            find_transition rest currentCharacter
+      in
+      find_transition trans_list currentCharacter
+
+      
+let tape_with_marker new_tape head_index =
+  let rec mark_tape tape index acc =
+    if String.length tape = 0 then
+      acc
+    else
+      let c = String.get tape 0 in
+      let rest = String.sub tape 1 (String.length tape - 1) in
+      let marked_char =
+        if index = 0 then Printf.sprintf "<%c>" c
+        else Printf.sprintf "%c" c
+      in
+      mark_tape rest (index - 1) (acc ^ marked_char)
+  in
+  mark_tape new_tape head_index ""
+
+
+let apply_transition (machine: turing_machine) (transition : Transition.transition): string =
+  machine#set_state transition.to_state;
+
+  let current_tape = machine#get_tape in
+  let head_index = machine#get_head in
+  let new_tape =
+    let before = String.sub current_tape 0 head_index in
+    let after = String.sub current_tape (head_index + 1) (String.length current_tape - head_index - 1) in
+    before ^ transition.write ^ after
+  in
+
+  machine#set_tape new_tape;
+
+  let tape_output = tape_with_marker new_tape head_index in
+  Printf.printf "Updated Tape: %s\n" tape_output;
+
+  if transition.action = "RIGHT" then begin
+    machine#set_head (machine#get_head + 1);
+  end else if transition.action = "LEFT" then begin
+    machine#set_head (machine#get_head - 1);
+  end;
   
+  machine#get_state
+
+let rec run_machine (machine : turing_machine) =
+  let currentCharacter = String.make 1 (String.get (machine#get_tape) (machine#get_head)) in
+  Printf.printf "Current: %s\n" currentCharacter;
+  match get_next_transition machine currentCharacter with
+  | Some transition ->
+      Printf.printf "Transition to apply:\n";
+      Printf.printf "  Read: %s\n" transition.read;
+      Printf.printf "  To State: %s\n" transition.to_state;
+      Printf.printf "  Write: %s\n" transition.write;
+      Printf.printf "  Action: %s\n" transition.action; 
+      let new_state = apply_transition machine transition in
+      Printf.printf "New state: %s\n" new_state;
+
+      let final_states = machine#get_finals in
+      if List.mem new_state final_states then
+        Printf.printf "Final state reached.\n"
+      else
+        run_machine machine 
+      
+  | None -> Printf.printf "No transition found.\n";
+  ()

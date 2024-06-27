@@ -72,7 +72,7 @@ let validate_machine machine =
       true
     with Exit -> false
 
-let parse_machine json =
+let parse_machine json input =
   let machine = new turing_machine in
   machine#set_name (json |> member "name" |> to_string);
   machine#set_alphabet (json |> member "alphabet" |> to_list |> List.map to_string);
@@ -80,6 +80,9 @@ let parse_machine json =
   machine#set_states (json |> member "states" |> to_list |> List.map to_string);
   machine#set_initial (json |> member "initial" |> to_string);
   machine#set_finals (json |> member "finals" |> to_list |> List.map to_string);
+  machine#set_state machine#get_initial;
+  machine#set_tape (".." ^ input ^ "..");
+  machine#set_head 2;
 
   let transitions_tbl = Hashtbl.create 10 in
   let transitions_json = json |> member "transitions" |> to_assoc in
