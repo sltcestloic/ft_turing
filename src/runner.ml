@@ -84,9 +84,9 @@ let rec run_machine (machine : turing_machine) =
 
       let final_states = machine#get_finals in
       if List.mem new_state final_states then
-        Printf.printf "Done.\n"
+        print_endline "Done."
       else
         run_machine machine 
       
-  | None -> Printf.printf "No transition found.\n";
+  | None -> print_endline "Error: No transition found.";
   ()
