@@ -39,6 +39,8 @@ let () =
 
       if validate_machine machine then (
         print_endline "Machine is valid !";
+        if not (validate_input machine input) then
+          exit 1;
         run_machine machine
       )
 

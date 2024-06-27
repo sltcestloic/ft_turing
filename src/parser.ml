@@ -1,6 +1,22 @@
 include Turing_machine
 include Yojson.Basic.Util
 
+let validate_input (machine : turing_machine) (input : string) : bool =
+  let alphabet = machine#get_alphabet in
+  let blank = String.get machine#get_blank 0 in
+  let has_invalid_char =
+    String.exists (fun c -> not (List.exists (fun s -> s = String.make 1 c) alphabet)) input
+  in
+  if has_invalid_char then begin
+    print_endline "Error: Input contains characters that are not part of the alphabet.";
+    false
+  end else if String.contains input blank then begin
+    print_endline "Error: Input contains the blank symbol.";
+    false
+  end else
+    true
+
+
 let validate_machine machine =
   let name = machine#get_name in
   let alphabet = machine#get_alphabet in
