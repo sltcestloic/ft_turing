@@ -40,6 +40,7 @@ let () =
       if validate_machine machine then (
         if not (validate_input machine input) then
           exit 1;
+        print_tape_output machine None;
         run_machine machine
       )
 

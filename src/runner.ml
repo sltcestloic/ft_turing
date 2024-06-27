@@ -19,7 +19,7 @@ let get_next_transition machine current_char =
       find_transition trans_list current_char
 
 
-let tape_with_marker machine head_index =
+let tape_with_marker machine =
   let rec mark_tape tape index acc =
     if String.length tape = 0 then
       if String.length acc < 20 then
@@ -35,9 +35,19 @@ let tape_with_marker machine head_index =
       in
       mark_tape rest (index - 1) (acc ^ marked_char)
   in
-  mark_tape machine#get_tape head_index ""
+  mark_tape machine#get_tape machine#get_head ""
 
-
+let print_tape_output (machine : turing_machine) (transition : Transition.transition option) =
+  let tape_output = tape_with_marker machine in
+  Printf.printf "%s" tape_output;
+  match transition with
+  | Some t ->
+      Printf.printf " (%s, %s, %s)\n"
+        t.to_state
+        t.write
+        t.action
+  | None -> print_endline ""
+  
 let apply_transition (machine: turing_machine) (transition : Transition.transition): string =
   machine#set_state transition.to_state;
 
@@ -48,11 +58,9 @@ let apply_transition (machine: turing_machine) (transition : Transition.transiti
     let after = String.sub current_tape (head_index + 1) (String.length current_tape - head_index - 1) in
     before ^ transition.write ^ after
   in
-
+  
+  
   machine#set_tape new_tape;
-
-  let tape_output = tape_with_marker machine head_index in
-  print_endline tape_output;
 
   if transition.action = "RIGHT" then begin (
     machine#set_head (machine#get_head + 1);
@@ -64,9 +72,11 @@ let apply_transition (machine: turing_machine) (transition : Transition.transiti
     machine#set_head (machine#get_head - 1);
     if machine#get_head == -1 then (
       machine#set_tape (machine#get_blank ^ machine#get_tape);
-      machine#set_head 0
+    machine#set_head 0
     )
   end;
+  
+  print_tape_output machine (Some transition);
   
   machine#get_state
 
