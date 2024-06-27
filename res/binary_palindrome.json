@@ -23,14 +23,16 @@
             { "read": "1", "to_state": "invalid", "write": "1", "action": "RIGHT" },
             { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
             { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" },
-            { "read": "X", "to_state": "check_0", "write": "X", "action": "LEFT" }
+            { "read": "X", "to_state": "check_0", "write": "X", "action": "LEFT" },
+            { "read": ".", "to_state": "valid", "write": ".", "action": "RIGHT" }
         ],
         "check_1": [
             { "read": "0", "to_state": "invalid", "write": "0", "action": "RIGHT" },
-            { "read": "1", "to_state": "scanleft", "write": "X", "action": "RIGHT" },
+            { "read": "1", "to_state": "scanleft", "write": "X", "action": "LEFT" },
             { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
             { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" },
-            { "read": "X", "to_state": "check_1", "write": "X", "action": "LEFT" }
+            { "read": "X", "to_state": "check_1", "write": "X", "action": "LEFT" },
+            { "read": ".", "to_state": "valid", "write": ".", "action": "RIGHT" }
         ],
         "end_0": [
             { "read": ".", "to_state": "check_0", "write": ".", "action": "LEFT" },
