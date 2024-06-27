@@ -19,11 +19,11 @@ let get_next_transition machine current_char =
       find_transition trans_list current_char
 
 
-let tape_with_marker new_tape head_index =
+let tape_with_marker machine head_index =
   let rec mark_tape tape index acc =
     if String.length tape = 0 then
       if String.length acc < 20 then
-        "[" ^ acc ^ String.make (20 - String.length acc) '.' ^ "]"
+        "[" ^ acc ^ String.make (20 - String.length acc) (String.get machine#get_blank 0) ^ "]"
       else
         "[" ^ String.sub acc 0 20 ^ "]"
     else
@@ -35,7 +35,7 @@ let tape_with_marker new_tape head_index =
       in
       mark_tape rest (index - 1) (acc ^ marked_char)
   in
-  mark_tape new_tape head_index ""
+  mark_tape machine#get_tape head_index ""
 
 
 let apply_transition (machine: turing_machine) (transition : Transition.transition): string =
@@ -51,7 +51,7 @@ let apply_transition (machine: turing_machine) (transition : Transition.transiti
 
   machine#set_tape new_tape;
 
-  let tape_output = tape_with_marker new_tape head_index in
+  let tape_output = tape_with_marker machine head_index in
   print_endline tape_output;
 
   if transition.action = "RIGHT" then begin (
