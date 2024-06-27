@@ -7,7 +7,10 @@ let validate_input (machine : turing_machine) (input : string) : bool =
   let has_invalid_char =
     String.exists (fun c -> not (List.exists (fun s -> s = String.make 1 c) alphabet)) input
   in
-  if has_invalid_char then begin
+  if input = "" then begin
+    print_endline "Error: Input is empty.";
+    false
+  end else if has_invalid_char then begin
     print_endline "Error: Input contains characters that are not part of the alphabet.";
     false
   end else if String.contains input blank then begin
