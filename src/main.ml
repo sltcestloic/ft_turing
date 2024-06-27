@@ -28,7 +28,7 @@ let () =
     try 
       let json = Yojson.Basic.from_file filename in
       let machine = parse_machine json input in
-      Printf.printf "Turing Machine Name: %s\n" machine#get_name;
+      Printf.printf "Machine Name: %s\n" machine#get_name;
       Printf.printf "Alphabet: %s\n" (String.concat ", " machine#get_alphabet);
       Printf.printf "Blank: %s\n" machine#get_blank;
       Printf.printf "States: %s\n" (String.concat ", " machine#get_states);
@@ -38,7 +38,6 @@ let () =
       machine#print_transitions;
 
       if validate_machine machine then (
-        print_endline "Machine is valid !";
         if not (validate_input machine input) then
           exit 1;
         run_machine machine

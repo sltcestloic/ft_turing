@@ -97,8 +97,7 @@ let parse_machine json input =
   machine#set_initial (json |> member "initial" |> to_string);
   machine#set_finals (json |> member "finals" |> to_list |> List.map to_string);
   machine#set_state machine#get_initial;
-  machine#set_tape (".." ^ input ^ "..");
-  machine#set_head 2;
+  machine#set_tape (input);
 
   let transitions_tbl = Hashtbl.create 10 in
   let transitions_json = json |> member "transitions" |> to_assoc in

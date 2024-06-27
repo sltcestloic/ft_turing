@@ -18,7 +18,14 @@ $(OBJ_DIR)/%.cmx: $(SRC_DIR)/%.ml
 	@mkdir -p $(OBJ_DIR)
 	$(CML) -I .obj -o $@ -c $<
 
-$(NAME): $(OBJS)
+.PHONY: all
+all: $(NAME)
+
+.PHONY: opam
+opam:
+	opam install yojson
+
+$(NAME): opam $(OBJS)
 	$(CML) -o $(NAME) $(OBJS)
 
 .PHONY: clean
@@ -31,6 +38,3 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
-
-.PHONY: all
-all: $(NAME)
