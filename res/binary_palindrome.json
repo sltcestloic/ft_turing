@@ -47,7 +47,7 @@
             { "read": "1", "to_state": "end_1", "write": "1", "action": "RIGHT" }
         ],
         "valid": [
-            { "read": ".", "to_state": "HALT", "write": "y", "action": "LEFT" },
+            { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" },
             { "read": "X", "to_state": "valid", "write": "X", "action": "RIGHT" },
             { "read": "0", "to_state": "invalid", "write": "0", "action": "RIGHT" },
             { "read": "1", "to_state": "invalid", "write": "1", "action": "RIGHT" },
@@ -55,7 +55,7 @@
             { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
         ],
         "invalid": [
-            { "read": ".", "to_state": "HALT", "write": "n", "action": "LEFT" },
+            { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" },
             { "read": "X", "to_state": "invalid", "write": "X", "action": "RIGHT" },
             { "read": "0", "to_state": "invalid", "write": "0", "action": "RIGHT" },
             { "read": "1", "to_state": "invalid", "write": "1", "action": "RIGHT" },
