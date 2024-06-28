@@ -21,13 +21,13 @@ let get_next_transition machine current_char =
 let tape_with_marker machine =
   let rec mark_tape tape index acc =
     if String.length tape = 0 then
-      if String.length acc < 20 then
-        "[" ^ acc ^ String.make (20 - String.length acc) (String.get machine.blank 0) ^ "]"
+      if String.length acc < 50 then
+        "[" ^ acc ^ String.make (50 - String.length acc) (String.get machine.blank 0) ^ "]"
       else (
-        if machine.head >= 18 then
-          "[" ^ String.sub acc (machine.head - 17) 20 ^ "]"
+        if machine.head > 47 then
+          "[" ^ String.sub acc (machine.head - 47) 50 ^ "]"
         else
-          "[" ^ String.sub acc 0 20 ^ "]"
+          "[" ^ String.sub acc 0 50 ^ "]"
       )
     else
       let c = String.get tape 0 in
