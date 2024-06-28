@@ -46,6 +46,7 @@ let () =
       Printf.printf "Final States: %s\n" (String.concat ", " machine.finals);
       Printf.printf "Transitions:\n";
       print_transitions machine.transitions;
+      print_endline "";
 
       if validate_machine machine then (
         if not (validate_input machine input) then
@@ -59,5 +60,3 @@ let () =
       Printf.printf "File %s is not a valid JSON file: %s\n" filename msg;
       exit 1
   )
-
- 

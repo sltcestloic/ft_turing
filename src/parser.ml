@@ -63,7 +63,11 @@ let validate_machine machine =
     false
   )
   else if not (List.for_all (fun s -> List.mem s finals || Hashtbl.mem transitions s) states) then (
-    print_endline "Error: One or more of the states don't have a corresponding transitions";
+    print_endline "Error: One or more of the states doesn't have a corresponding transitions";
+    false
+  )
+  else if Hashtbl.fold (fun _ v acc -> acc || v = []) transitions false then (
+    print_endline "Error: One or more of the transitions lists is empty";
     false
   )
   else
