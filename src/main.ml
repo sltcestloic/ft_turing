@@ -36,7 +36,7 @@ let () =
     );
 
     try 
-      let json = Yojson.Basic.from_file filename in
+      let json = Yojson.Safe.from_file filename in
       let machine = parse_machine json input in
       Printf.printf "Machine Name: %s\n" machine.name;
       Printf.printf "Alphabet: %s\n" (String.concat ", " machine.alphabet);

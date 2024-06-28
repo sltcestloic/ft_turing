@@ -1,5 +1,6 @@
 include Turing_machine
-include Yojson.Basic.Util
+
+include Yojson.Safe.Util
 
 let validate_input (machine : turing_machine) (input : string) : bool =
   let alphabet = machine.alphabet in
@@ -73,6 +74,14 @@ let validate_machine machine =
     print_endline "Error: One or more of the transitions lists is empty";
     false
   )
+  else if not (List.for_all (fun final_state ->
+    Hashtbl.fold (fun _ transitions acc ->
+      acc || List.exists (fun transition -> transition.to_state = final_state) transitions
+    ) transitions false
+  ) finals) then (
+    print_endline "Error: One or more of the final states doesn't have a corresponding transition";
+    false
+  )
   else
     let validate_transition state trans_list =
       List.for_all (fun (t: Transition.transition) ->
@@ -98,28 +107,35 @@ let validate_machine machine =
       true
     with Exit -> false
 
+let get_member json name =
+  match member name json with
+  | `Null ->
+    print_endline ("Error: Missing element in JSON: " ^ name);
+    exit 1
+  | value -> value
+
 let parse_machine json input =
-  let name = json |> member "name" |> to_string in
-  let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
-  let blank = json |> member "blank" |> to_string in
-  let states = json |> member "states" |> to_list |> List.map to_string in
-  let initial = json |> member "initial" |> to_string in
-  let finals = json |> member "finals" |> to_list |> List.map to_string in
+  let name = get_member json "name" |> to_string in
+  let alphabet = get_member json "alphabet" |> to_list |> List.map to_string in
+  let blank = get_member json "blank" |> to_string in
+  let states = get_member json "states" |> to_list |> List.map to_string in
+  let initial = get_member json "initial" |> to_string in
+  let finals = get_member json "finals" |> to_list |> List.map to_string in
   let state = initial in
   let tape = input in
   let head = 0 in
 
   let transitions_tbl = Hashtbl.create 10 in
-  let transitions_json = json |> member "transitions" |> to_assoc in
+  let transitions_json = get_member json "transitions" |> to_assoc in
   List.iter (fun (state, transitions) ->
       match transitions with
       | `List transitions ->
         let transitions_list = List.map (fun t ->
             {
-              Transition.read = t |> member "read" |> to_string;
-              Transition.to_state = t |> member "to_state" |> to_string;
-              Transition.write = t |> member "write" |> to_string;
-              Transition.action = t |> member "action" |> to_string;
+              Transition.read = get_member t "read" |> to_string;
+              Transition.to_state = get_member t "to_state" |> to_string;
+              Transition.write = get_member t "write" |> to_string;
+              Transition.action = get_member t "action" |> to_string;
             }
           ) transitions in
         Hashtbl.add transitions_tbl state transitions_list
