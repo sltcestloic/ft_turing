@@ -2,7 +2,7 @@
     "name": "0n1n_word",
     "alphabet": [ "0", "1", "X", "y", "n", "." ],
     "blank": ".",
-    "states": [ "scan0", "scan1", "scanleft", "invalid", "HALT" ],
+    "states": [ "scan0", "scan1", "scanleft", "scanX", "valid", "invalid", "HALT" ],
     "initial": "scan0",
     "finals": [ "HALT" ],
     "transitions": {
@@ -18,7 +18,15 @@
             { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" },
             { "read": "X", "to_state": "scan1", "write": "X", "action": "RIGHT" },
             { "read": "0", "to_state": "scan1", "write": "0", "action": "RIGHT" },
-            { "read": "1", "to_state": "scanleft", "write": "X", "action": "LEFT" },
+            { "read": "1", "to_state": "scanX", "write": "X", "action": "LEFT" },
+            { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
+            { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
+        ],
+        "scanX": [
+            { "read": ".", "to_state": "valid", "write": ".", "action": "RIGHT" },
+            { "read": "X", "to_state": "scanX", "write": "X", "action": "LEFT" },
+            { "read": "0", "to_state": "scanleft", "write": "0", "action": "LEFT" },
+            { "read": "1", "to_state": "scanleft", "write": "1", "action": "LEFT" },
             { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
             { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
         ],
@@ -27,6 +35,14 @@
             { "read": "X", "to_state": "scanleft", "write": "X", "action": "LEFT" },
             { "read": "0", "to_state": "scanleft", "write": "0", "action": "LEFT" },
             { "read": "1", "to_state": "scanleft", "write": "1", "action": "LEFT" },
+            { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
+            { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
+        ],
+        "valid": [
+            { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" },
+            { "read": "X", "to_state": "valid", "write": "X", "action": "RIGHT" },
+            { "read": "0", "to_state": "invalid", "write": "0", "action": "RIGHT" },
+            { "read": "1", "to_state": "invalid", "write": "1", "action": "RIGHT" },
             { "read": "y", "to_state": "invalid", "write": "y", "action": "RIGHT" },
             { "read": "n", "to_state": "invalid", "write": "n", "action": "RIGHT" }
         ],
