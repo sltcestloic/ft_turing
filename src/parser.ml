@@ -29,7 +29,10 @@ let validate_machine machine =
   let finals = machine.finals in
   let transitions = machine.transitions in
 
-  if name = "" then false
+  if name = "" then (
+    print_endline "Error: Name is empty";
+    false
+  )
   else if not (List.for_all (fun s -> String.length s = 1) alphabet) then (
     print_endline "Error: Each item of the alphabet must be exactly 1 char long";
     false
