@@ -86,16 +86,16 @@ let validate_machine machine =
     let validate_transition state trans_list =
       List.for_all (fun (t: Transition.transition) ->
           if not (List.mem t.read alphabet) then (
-            print_endline ("Validation error: Transition read symbol " ^ t.read ^ " is not part of the alphabet");
+            print_endline ("Validation error: Transition read symbol \"" ^ t.read ^ "\" is not part of the alphabet");
             false
           ) else if not (List.mem t.write alphabet) then (
-            print_endline ("Validation error: Transition write symbol " ^ t.write ^ " is not part of the alphabet");
+            print_endline ("Validation error: Transition write symbol \"" ^ t.write ^ "\" is not part of the alphabet");
             false
           ) else if not (List.mem t.to_state states || List.mem t.to_state finals) then (
-            print_endline ("Validation error: Transition to_state " ^ t.to_state ^ " is not part of the states or finals");
+            print_endline ("Validation error: Transition to_state \"" ^ t.to_state ^ "\" is not part of the states or finals");
             false
           ) else if not (t.action = "RIGHT" || t.action = "LEFT") then (
-            print_endline ("Validation error: Transition action " ^ t.action ^ " is not valid (must be RIGHT or LEFT)");
+            print_endline ("Validation error: Transition action \"" ^ t.action ^ "\" is not valid (must be RIGHT or LEFT)");
             false
           ) else true
         ) trans_list
