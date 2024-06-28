@@ -23,8 +23,12 @@ let tape_with_marker machine =
     if String.length tape = 0 then
       if String.length acc < 20 then
         "[" ^ acc ^ String.make (20 - String.length acc) (String.get machine.blank 0) ^ "]"
-      else
-        "[" ^ String.sub acc 0 20 ^ "]"
+      else (
+        if machine.head >= 18 then
+          "[" ^ String.sub acc (machine.head - 17) 20 ^ "]"
+        else
+          "[" ^ String.sub acc 0 20 ^ "]"
+      )
     else
       let c = String.get tape 0 in
       let rest = String.sub tape 1 (String.length tape - 1) in
